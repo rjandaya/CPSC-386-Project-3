@@ -1,9 +1,13 @@
+console.log(gsap)
 const canvas = document.querySelector('canvas')
 
 const context = canvas.getContext('2d')
 
 canvas.width = innerWidth
 canvas.height = innerHeight
+
+const scoreEl = document.querySelector('#scoreEl')
+console.log(scoreEl)
 
 class Player {
     constructor(x, y, radius, color) {
@@ -64,6 +68,38 @@ class Enemy {
     }
 }
 
+const friction = 0.98
+
+class Particle {
+    constructor(x, y, radius, color, velocity) {
+        this.x = x
+        this.y = y
+        this.radius = radius
+        this.color = color
+        this.velocity = velocity
+        this.alpha = 1
+    }
+
+    drawProjectile() {
+        context.save()
+        context.globalAlpha = this.alpha
+        context.beginPath()
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+        context.fillStyle = this.color
+        context.fill()
+        context.restore()
+    }
+
+    update() {
+        this.drawProjectile()
+        this.velocity.x *= friction
+        this.velocity.y *= friction
+        this.x = this.x + this.velocity.x
+        this.y = this.y + this.velocity.y
+        this.alpha -= 0.01
+    }
+}
+
 const x = canvas.width / 2
 const y = canvas.height / 2
 
@@ -71,6 +107,7 @@ const player = new Player(x, y, 10, 'white')
 
 const projectiles = []
 const enemies = []
+const particles = []
 
 function spawnEnemies() {
   setInterval(() => {
@@ -105,12 +142,22 @@ function spawnEnemies() {
 }
 
 let animationId
+let score = 0
 function animate() {
     animationId = requestAnimationFrame(animate)
     // console.log('go')
     context.fillStyle = 'rgba(0, 0, 0, 0.1)'
     context.fillRect(0, 0, canvas.width, canvas.height)
     player.drawPlayer()
+    particles.forEach(particle, index => { 
+        if (particle.alpha <= 0) {
+            particles.splice(index, 1)
+        }
+        else {
+            particle.update()
+        }
+    })
+
     projectiles.forEach((projectile, index) => {
        projectile.update()
 
@@ -139,14 +186,39 @@ function animate() {
 
           if (dist - enemy.radius - projectile.radius < 1)
           {
-              if (enemy.radius - 10 > 10) {
-                  enemy.radius -= 10
+            score += 100
+            scoreEl.innerHTML = score
+
+              for (let i = 0; i < enemy.radius * 2; i++) {
+                  particles.push(
+                      new Particle(
+                          projectile.x, 
+                          projectile.y, 
+                          Math.random() * 2, 
+                          enemy.color, {
+                      x: (Math.random() - 0.5) * (Math.random() * 5), 
+                      y: (Math.random() - 0.5) * (Math.random() * 5)
+                    }) 
+                )
+              }
+
+              if (enemy.radius - 10 > 5) {
+
+                score += 100
+                scoreEl.innerHTML = score
+
+                  gsap.to(enemy, {
+                      radius: enemy.radius - 10
+                  })
 
                   setTimeout(() => {
                     projectiles.splice(projectileIndex, 1)
                 }, 0)
 
               } else {
+                score += 200
+                scoreEl.innerHTML = score
+
                 setTimeout(() => {
                     enemies.splice(index, 1)
                     projectiles.splice(projectileIndex, 1)
