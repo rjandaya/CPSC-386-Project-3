@@ -7,7 +7,6 @@ canvas.width = innerWidth
 canvas.height = innerHeight
 
 const scoreEl = document.querySelector('#scoreEl')
-console.log(scoreEl)
 
 class Player {
     constructor(x, y, radius, color) {
@@ -69,7 +68,6 @@ class Enemy {
 }
 
 const friction = 0.98
-
 class Particle {
     constructor(x, y, radius, color, velocity) {
         this.x = x
@@ -149,18 +147,17 @@ function animate() {
     context.fillStyle = 'rgba(0, 0, 0, 0.1)'
     context.fillRect(0, 0, canvas.width, canvas.height)
     player.drawPlayer()
-    particles.forEach(particle, index => { 
+    particles.forEach((particle, index) => { 
         if (particle.alpha <= 0) {
             particles.splice(index, 1)
-        }
-        else {
+        } else {
             particle.update()
         }
     })
 
     projectiles.forEach((projectile, index) => {
        projectile.update()
-
+    
        if (projectile.x + projectile.radius < 0 || projectile.x - projectile.radius > canvas.width ||
         projectile.y + projectile.radius < 0 || projectile.y - projectile.radius > canvas.height)
        {
@@ -188,33 +185,27 @@ function animate() {
           {
             score += 100
             scoreEl.innerHTML = score
-
-              for (let i = 0; i < enemy.radius * 2; i++) {
-                  particles.push(
-                      new Particle(
-                          projectile.x, 
-                          projectile.y, 
-                          Math.random() * 2, 
-                          enemy.color, {
-                      x: (Math.random() - 0.5) * (Math.random() * 5), 
-                      y: (Math.random() - 0.5) * (Math.random() * 5)
+            
+            for (let i = 0; i < enemy.radius * 2; i++) {
+                particles.push(
+                    new Particle(projectile.x, projectile.y, Math.random() * 2, enemy.color, 
+                    {
+                        x: (Math.random() - 0.5) * (Math.random() * 5), 
+                        y: (Math.random() - 0.5) * (Math.random() * 5)
                     }) 
                 )
-              }
+            }
 
               if (enemy.radius - 10 > 5) {
-
-                score += 100
-                scoreEl.innerHTML = score
-
+                  score += 100
+                  scoreEl.innerHTML = score
+                  
                   gsap.to(enemy, {
                       radius: enemy.radius - 10
                   })
-
                   setTimeout(() => {
                     projectiles.splice(projectileIndex, 1)
-                }, 0)
-
+                    }, 0)
               } else {
                 score += 200
                 scoreEl.innerHTML = score
@@ -223,12 +214,10 @@ function animate() {
                     enemies.splice(index, 1)
                     projectiles.splice(projectileIndex, 1)
                 }, 0)
-            }
-
+             }
           }
-      });
+      })
     })
-
 }
 
 addEventListener('click', (event) => {
