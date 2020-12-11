@@ -1,9 +1,11 @@
 # CPSC-386-Project-3
 
 Team Name: Battleship
+
 Team Members: Jose Alvarado, RJ Andaya, Fernando Andrade, Madonna Lewis, and Phillip Presuel
 
 Game: Attack of the Bunnies
+
 Game Tag-Line: Keep enemy projectiles away by shooting at them.
 
 Game Theme/F-World: The last standing soldier fights off a swarm of enemies with the ravage bunnies as their leaders. The soldier has no armor and is vulnerable to immediate death if a bunny makes contact with them.
