@@ -19,8 +19,8 @@ Technology: Our video game is going to be a spaceship shooter type of game.
 Our video game will be a still background view. With a still background the enemy will spawn in from the borders and approach the player spaceship in the middle.
 
 ## Contents
-index.html  : The HTML file to be opened with a web browser
-index.js    : The Javascript file containing the game's functionality
+index.html  : The HTML file to be opened with a web browser<br>
+index.js    : The Javascript file containing the game's functionality<br>
 bunny.jpg   : Image used in the splash screen
 
 ## External Requirements:
