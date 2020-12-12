@@ -21,6 +21,7 @@ Our video game will be a still background view. With a still background the enem
 ## Contents
 index.html  : The HTML file to be opened with a web browser
 index.js    : The Javascript file containing the game's functionality
+bunny.jpg   : Image used in the splash screen
 
 ## External Requirements:
 Standard compiler to run basic files types, JavaScript, HTML, and so forth.
